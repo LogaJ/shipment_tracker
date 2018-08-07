@@ -1,0 +1,48 @@
+github:
+  project_name: shipment_tracker 
+deploy_tasks:
+  lock_flight:
+    enabled: true
+  shipment_tracker:
+    enabled: true
+    deploy_token: KxT3S6cFjtQ5aVsB3GSVrzQW
+  marathon:
+    apps:
+      - id: work
+        cpus: 0.25
+        mem: 256
+        args: ["bundle", "exec", "rake", "jobs:work"]
+      - id: update_events_loop
+        cpus: 0.25
+        mem: 256
+        args: ["bundle", "exec", "rake", "jobs:update_events_loop"]
+      - id: git_worker 
+        cpus: 0.25
+        mem: 256
+        args: ["bundle", "exec", "rake", "jobs:update_git_loop"]
+      - id: web
+        cpus: 0.25
+        mem: 256
+        args: ["bundle", "exec", "unicorn", "-o", "0.0.0.0", "-p", "9292"]
+        constraints:
+          - - hostname
+            - UNIQUE
+        container:
+          docker:
+            portMappings:
+              - containerPort: 9292
+                hostPort: 0
+            forcePullImage: true
+        healthChecks:
+          - path: "/heartbeat"
+            portIndex: 0
+            protocol: HTTP
+            gracePeriodSeconds: 30
+            intervalSeconds: 30
+            timeoutSeconds: 20
+            maxConsecutiveFailures: 3
+        labels:
+          tags: http
+          overrideTaskName: shipment-tracker
+  postgres:
+    migrations_path: /app/docker/run_migrations.sh
