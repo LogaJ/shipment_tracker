@@ -363,7 +363,7 @@ GEM
     unicorn (5.4.0)
       kgio (~> 2.6)
       raindrops (~> 0.7)
-    unicorn-rails (2.2.0)
+    unicorn-rails (2.2.1)
       rack
       unicorn
     uri-ssh_git (2.0.0)
