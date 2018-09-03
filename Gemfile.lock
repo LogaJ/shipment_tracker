@@ -330,7 +330,7 @@ GEM
     skinny (0.2.4)
       eventmachine (~> 1.0.0)
       thin (>= 1.5, < 1.7)
-    slack-notifier (1.5.1)
+    slack-notifier (2.3.2)
     solid_use_case (2.1.1)
       deterministic (~> 0.6.0)
     spring (2.0.2)
